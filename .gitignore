@@ -1,0 +1,19 @@
+# Node dependencies
+node_modules/
+
+# Python virtual environment
+venv/
+
+# Environment variables
+.env
+
+# Build directories
+dist/
+build/
+.next/
+
+# Log files
+*.log
+
+# System files
+.DS_Store
