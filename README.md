@@ -55,8 +55,8 @@ Deployment on production-ready platforms
 ---
 ## 📁 Local Setup (Optional for Devs)
 
-1.Clone the repo
 ```bash
+1. Clone the repo
 git clone https://github.com/hdomadia7601/Minimal_search_engine.git
 cd Minimal_search_engine
 
