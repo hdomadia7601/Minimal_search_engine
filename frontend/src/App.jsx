@@ -17,7 +17,7 @@ export default function App() {
     setSummary('');
 
     try {
-      const response = await fetch(`http://localhost:8000/search?query=${encodeURIComponent(query)}`);
+      const response = await fetch(`https://minimal-search-engine.onrender.com/search?query=${encodeURIComponent(query)}`);
       if (!response.ok) throw new Error('Search failed. Please try again later.');
 
       const data = await response.json();
