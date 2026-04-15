@@ -5,24 +5,46 @@ from dotenv import load_dotenv
 import os
 from exa_py import Exa
 
-# Load keys from .env
+# Load environment variables
 load_dotenv()
 
-# Setup Exa client
+# Initialize Exa client
 exa = Exa(os.getenv("EXA_API_KEY"))
 
-# FastAPI app setup
+# Create FastAPI app
 app = FastAPI()
 
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Schema (optional, not used right now)
+class Query(BaseModel):
+    query: str
+
+# Root route
 @app.get("/")
 def root():
     return {"message": "Exa Search Engine is running."}
 
-# ✅ ADD THIS HERE
+# Debug route
 @app.get("/debug")
 def debug():
     return {"key": os.getenv("EXA_API_KEY")}
 
+# Mock summary function
+def mock_gpt_summary(query):
+    return f"""
+Here's a summary based on your search for "{query}":
+This topic has a wide range of relevant insights. Below are curated links that can guide you further.
+"""
+
+# Search route with fallback
 @app.get("/search")
 def search(query: str):
     try:
@@ -35,9 +57,9 @@ def search(query: str):
             ]
         }
 
-     except Exception:
+    except Exception:
         return {
-            "summary": "Demo mode: API unavailable",
+            "summary": f"Demo mode: results for '{query}'",
             "raw_results": [
                 {
                     "title": "Search on Google",
@@ -46,46 +68,10 @@ def search(query: str):
                 {
                     "title": "Read on Wikipedia",
                     "url": f"https://en.wikipedia.org/wiki/{query}"
+                },
+                {
+                    "title": "Watch on YouTube",
+                    "url": f"https://www.youtube.com/results?search_query={query}"
                 }
             ]
         }
-
-# CORS for frontend access
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Update if you deploy
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Schema for GET endpoint
-class Query(BaseModel):
-    query: str
-
-@app.get("/")
-def root():
-    return {"message": "Exa Search Engine is running."}
-
-# Function to fake GPT-like summary
-def mock_gpt_summary(query):
-    return f"""
-Here's a summary based on your search for **"{query}"**:
-This topic has a wide range of relevant insights. Below are curated links that can guide you to deeper knowledge, tools, or services.
-Start exploring and enjoy your search journey!
-"""
-
-# Search endpoint
-@app.get("/search")
-def search(query: str):
-    response = exa.search(query, num_results=5)
-
-    search_results = response.results
-    summary = mock_gpt_summary(query)
-
-    return {
-        "summary": summary,
-        "raw_results": [
-            {"title": r.title, "url": r.url} for r in search_results
-        ]
-    }
