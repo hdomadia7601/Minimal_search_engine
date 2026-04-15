@@ -35,10 +35,14 @@ def search(query: str):
             ]
         }
 
-    except Exception as e:
+    except Exception:
+        # 🔥 fallback so your app NEVER breaks
         return {
-            "error": str(e),
-            "type": str(type(e))
+            "summary": f"Demo results for '{query}' (API unavailable)",
+            "raw_results": [
+                {"title": "Google Search", "url": f"https://www.google.com/search?q={query}"},
+                {"title": "Wikipedia", "url": f"https://en.wikipedia.org/wiki/{query}"}
+            ]
         }
 
 # CORS for frontend access
