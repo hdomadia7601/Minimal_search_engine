@@ -35,15 +35,20 @@ def search(query: str):
             ]
         }
 
-    except Exception:
-    return {
-        "summary": f"Here are curated starting points for '{query}'",
-        "raw_results": [
-            {"title": f"Top results for {query}", "url": f"https://www.google.com/search?q={query}"},
-            {"title": f"{query} explained", "url": f"https://en.wikipedia.org/wiki/{query}"},
-            {"title": f"{query} on YouTube", "url": f"https://www.youtube.com/results?search_query={query}"}
-        ]
-    }
+     except Exception:
+        return {
+            "summary": "Demo mode: API unavailable",
+            "raw_results": [
+                {
+                    "title": "Search on Google",
+                    "url": f"https://www.google.com/search?q={query}"
+                },
+                {
+                    "title": "Read on Wikipedia",
+                    "url": f"https://en.wikipedia.org/wiki/{query}"
+                }
+            ]
+        }
 
 # CORS for frontend access
 app.add_middleware(
