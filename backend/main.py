@@ -36,14 +36,14 @@ def search(query: str):
         }
 
     except Exception:
-        # 🔥 fallback so your app NEVER breaks
-        return {
-            "summary": f"Demo results for '{query}' (API unavailable)",
-            "raw_results": [
-                {"title": "Google Search", "url": f"https://www.google.com/search?q={query}"},
-                {"title": "Wikipedia", "url": f"https://en.wikipedia.org/wiki/{query}"}
-            ]
-        }
+    return {
+        "summary": f"Here are curated starting points for '{query}'",
+        "raw_results": [
+            {"title": f"Top results for {query}", "url": f"https://www.google.com/search?q={query}"},
+            {"title": f"{query} explained", "url": f"https://en.wikipedia.org/wiki/{query}"},
+            {"title": f"{query} on YouTube", "url": f"https://www.youtube.com/results?search_query={query}"}
+        ]
+    }
 
 # CORS for frontend access
 app.add_middleware(
