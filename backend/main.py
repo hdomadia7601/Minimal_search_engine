@@ -23,6 +23,24 @@ def root():
 def debug():
     return {"key": os.getenv("EXA_API_KEY")}
 
+@app.get("/search")
+def search(query: str):
+    try:
+        response = exa.search(query, num_results=5)
+
+        return {
+            "summary": mock_gpt_summary(query),
+            "raw_results": [
+                {"title": r.title, "url": r.url} for r in response.results
+            ]
+        }
+
+    except Exception as e:
+        return {
+            "error": str(e),
+            "type": str(type(e))
+        }
+
 # CORS for frontend access
 app.add_middleware(
     CORSMiddleware,
