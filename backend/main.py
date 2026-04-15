@@ -14,6 +14,15 @@ exa = Exa(os.getenv("EXA_API_KEY"))
 # FastAPI app setup
 app = FastAPI()
 
+@app.get("/")
+def root():
+    return {"message": "Exa Search Engine is running."}
+
+# ✅ ADD THIS HERE
+@app.get("/debug")
+def debug():
+    return {"key": os.getenv("EXA_API_KEY")}
+
 # CORS for frontend access
 app.add_middleware(
     CORSMiddleware,
